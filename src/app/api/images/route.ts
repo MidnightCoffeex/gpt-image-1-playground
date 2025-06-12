@@ -128,6 +128,7 @@ export async function POST(request: NextRequest) {
             const n = parseInt((formData.get('n') as string) || '1', 10);
             const size = (formData.get('size') as OpenAI.Images.ImageEditParams['size']) || 'auto';
             const quality = (formData.get('quality') as OpenAI.Images.ImageEditParams['quality']) || 'auto';
+            const moderation = (formData.get('moderation') as OpenAI.Images.ImageEditParams['moderation']) || 'auto';
 
             const imageFiles: File[] = [];
             for (const [key, value] of formData.entries()) {
@@ -148,7 +149,8 @@ export async function POST(request: NextRequest) {
                 image: imageFiles,
                 n: Math.max(1, Math.min(n || 1, 10)),
                 size: size === 'auto' ? undefined : size,
-                quality: quality === 'auto' ? undefined : quality
+                quality: quality === 'auto' ? undefined : quality,
+                moderation
             };
 
             if (maskFile) {
@@ -158,7 +160,8 @@ export async function POST(request: NextRequest) {
             console.log('Calling OpenAI edit with params:', {
                 ...params,
                 image: `[${imageFiles.map((f) => f.name).join(', ')}]`,
-                mask: maskFile ? maskFile.name : 'N/A'
+                mask: maskFile ? maskFile.name : 'N/A',
+                moderation
             });
             result = await openai.images.edit(params);
         } else {
