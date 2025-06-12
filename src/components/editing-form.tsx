@@ -20,6 +20,8 @@ import {
     Tally2,
     Tally3,
     Loader2,
+    ShieldCheck,
+    ShieldAlert,
     X,
     ScanEye,
     UploadCloud,
@@ -40,6 +42,7 @@ export type EditingFormData = {
     n: number;
     size: '1024x1024' | '1536x1024' | '1024x1536' | 'auto';
     quality: 'low' | 'medium' | 'high' | 'auto';
+    moderation: 'low' | 'auto';
     imageFiles: File[];
     maskFile: File | null;
 };
@@ -65,6 +68,8 @@ type EditingFormProps = {
     setEditSize: React.Dispatch<React.SetStateAction<EditingFormData['size']>>;
     editQuality: EditingFormData['quality'];
     setEditQuality: React.Dispatch<React.SetStateAction<EditingFormData['quality']>>;
+    editModeration: EditingFormData['moderation'];
+    setEditModeration: React.Dispatch<React.SetStateAction<EditingFormData['moderation']>>;
     editBrushSize: number[];
     setEditBrushSize: React.Dispatch<React.SetStateAction<number[]>>;
     editShowMaskEditor: boolean;
@@ -126,6 +131,8 @@ export function EditingForm({
     setEditSize,
     editQuality,
     setEditQuality,
+    editModeration,
+    setEditModeration,
     editBrushSize,
     setEditBrushSize,
     editShowMaskEditor,
@@ -438,6 +445,7 @@ export function EditingForm({
             n: editN[0],
             size: editSize,
             quality: editQuality,
+            moderation: editModeration,
             imageFiles: imageFiles,
             maskFile: editGeneratedMaskFile
         };
@@ -712,6 +720,18 @@ export function EditingForm({
                             <RadioItemWithIcon value='low' id='edit-quality-low' label='Low' Icon={Tally1} />
                             <RadioItemWithIcon value='medium' id='edit-quality-medium' label='Medium' Icon={Tally2} />
                             <RadioItemWithIcon value='high' id='edit-quality-high' label='High' Icon={Tally3} />
+                        </RadioGroup>
+                    </div>
+
+                    <div className='space-y-3'>
+                        <Label className='block text-white'>Moderation Level</Label>
+                        <RadioGroup
+                            value={editModeration}
+                            onValueChange={(value) => setEditModeration(value as EditingFormData['moderation'])}
+                            disabled={isLoading}
+                            className='flex flex-wrap gap-x-5 gap-y-3'>
+                            <RadioItemWithIcon value='auto' id='edit-mod-auto' label='Auto' Icon={ShieldCheck} />
+                            <RadioItemWithIcon value='low' id='edit-mod-low' label='Low' Icon={ShieldAlert} />
                         </RadioGroup>
                     </div>
 

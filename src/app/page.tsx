@@ -91,6 +91,7 @@ export default function HomePage() {
     const [editN, setEditN] = React.useState([1]);
     const [editSize, setEditSize] = React.useState<EditingFormData['size']>('auto');
     const [editQuality, setEditQuality] = React.useState<EditingFormData['quality']>('auto');
+    const [editModeration, setEditModeration] = React.useState<EditingFormData['moderation']>('auto');
     const [editBrushSize, setEditBrushSize] = React.useState([20]);
     const [editShowMaskEditor, setEditShowMaskEditor] = React.useState(false);
     const [editGeneratedMaskFile, setEditGeneratedMaskFile] = React.useState<File | null>(null);
@@ -341,6 +342,7 @@ export default function HomePage() {
             apiFormData.append('n', editN[0].toString());
             apiFormData.append('size', editSize);
             apiFormData.append('quality', editQuality);
+            apiFormData.append('moderation', editModeration);
 
             editImageFiles.forEach((file, index) => {
                 apiFormData.append(`image_${index}`, file, file.name);
@@ -393,7 +395,7 @@ export default function HomePage() {
                 } else {
                     historyQuality = editQuality;
                     historyBackground = 'auto';
-                    historyModeration = 'auto';
+                    historyModeration = editModeration;
                     historyOutputFormat = 'png';
                     historyPrompt = editPrompt;
                 }
@@ -762,6 +764,8 @@ export default function HomePage() {
                                 setEditSize={setEditSize}
                                 editQuality={editQuality}
                                 setEditQuality={setEditQuality}
+                                editModeration={editModeration}
+                                setEditModeration={setEditModeration}
                                 editBrushSize={editBrushSize}
                                 setEditBrushSize={setEditBrushSize}
                                 editShowMaskEditor={editShowMaskEditor}
